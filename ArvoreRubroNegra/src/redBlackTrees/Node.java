@@ -1,3 +1,4 @@
+package redBlackTrees;
 /**
  * Classe que implementa o nó da árvore Rubro Negra.
  * 
@@ -5,48 +6,48 @@
  *
  */
 public class Node {
-	Node esquerda;
-	Node direita;
-	Node pai;
+	Node left;
+	Node right;
+	Node parent;
 	String key;
 
 	// Black == True; Red == False;
 	boolean cor;
 
 	public Node(String key) {
-		this.pai = this.esquerda = this.direita = Arvore.nil;
+		this.parent = this.left = this.right = RBTree.nil;
 		this.key = key;
 		this.cor = false;
 	}
 
 	public Node(String key, boolean cor) {
-		this.pai = this.esquerda = this.direita = Arvore.nil;
+		this.parent = this.left = this.right = RBTree.nil;
 		this.key = key;
 		this.cor = cor;
 	}
 	
-	public Node getEsquerda() {
-		return esquerda;
+	public Node getLeft() {
+		return left;
 	}
 
-	public void setEsquerda(Node esquerda) {
-		this.esquerda = esquerda;
+	public void setLeft(Node left) {
+		this.left = left;
 	}
 
-	public Node getDireita() {
-		return direita;
+	public Node getRight() {
+		return right;
 	}
 
-	public void setDireita(Node direita) {
-		this.direita = direita;
+	public void setRight(Node right) {
+		this.right = right;
 	}
 
-	public Node getPai() {
-		return pai;
+	public Node getParent() {
+		return parent;
 	}
 
-	public void setPai(Node pai) {
-		this.pai = pai;
+	public void setParent(Node parent) {
+		this.parent = parent;
 	}
 
 	public String getKey() {

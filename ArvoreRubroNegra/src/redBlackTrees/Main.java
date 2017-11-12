@@ -1,3 +1,4 @@
+package redBlackTrees;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+import javax.swing.JFileChooser;
+
 /**
  * Classe principal para execução do programa. 
  * 
@@ -14,50 +17,73 @@ import java.util.Scanner;
  */
 public class Main {
 
+	public enum typeFileParameter {FIXED,ARGS,OPENDIALOG};
+	
 	public static void main(String[] args) {
 
 		FileReader f = null;
 		StringBuffer saida;
-		Arvore arb;
-		try {
+		RBTree arb;
 
-			f = new FileReader(args[0]);
-			saida = new StringBuffer();
-			arb = new Arvore();
+		f = getFile(typeFileParameter.FIXED, args);
+		
+//		f = new FileReader(args[0]);
+		saida = new StringBuffer();
+		arb = new RBTree();
+		
+//		saida.append("Arquivo de Entrada: ");
+		
+		lerArquivoPopularArvoreRB(f, saida, arb);
+		printAndCheckRBTree(saida, arb);
+		gravarSaida(saida);
 			
-			saida.append("Arquivo de Entrada: "+args[0]);
-			
-			lerArquivoPopularArvoreRB(f, saida, arb);
-			printAndCheckRBTree(saida, arb);
-			gravarSaida(saida);
-			
-		} catch (FileNotFoundException e) {
-			System.out.print("ERRO AO LER O DICIONÁRIO");
-		} 
 	}
 
-	private static void lerArquivoPopularArvoreRB(FileReader f, StringBuffer saida, Arvore arb) {
+	private static FileReader getFile(typeFileParameter type, String[] args) {
+		try {
+			switch (type.ordinal()) {
+				case 0 : 
+					File file = new File("/Users/rafaelrodrigues/Dev/workspace/dicionario.txt");
+					return new FileReader(file);
+				case 1 :
+					return new FileReader(args[0]);
+				case 2 :
+					JFileChooser fileChoose = new JFileChooser(); 
+					fileChoose.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChoose.showOpenDialog(null);
+					return new FileReader(fileChoose.getSelectedFile());
+				default :
+					return null;
+			}
+			
+		} catch (Exception e) {
+			System.out.print("ERRO AO LER O DICIONÁRIO");
+			return null;
+		}
+	}
+
+	private static void lerArquivoPopularArvoreRB(FileReader f, StringBuffer saida, RBTree arb) {
 		Scanner entrada = new Scanner(f);
 		
 		while (entrada.hasNext()) {
 			String value = entrada.next();
 			
-			Node no = arb.rbBusca(arb.raiz, value);
+			Node no = arb.rbBusca(arb.root, value);
 			switch (entrada.next()) {
 			case "1":
-				if (no == Arvore.nil) {
+				if (no == RBTree.nil) {
 					if (value.length() <= 20) {
 						no = new Node(value);
 						arb.rbInsert(arb, no);
 					} else {
-						saida.append("\n\nA palavra " + value + " é maior que 20 caracteres");
+						saida.append("\n\nA palavra " + value + " É maior que 20 caracteres");
 					}
 				} else {
 					saida.append("\n\nA palavra " + value + " já existe.");
 				}
 				break;
 			case "0":
-				if (no != Arvore.nil) {
+				if (no != RBTree.nil) {
 					saida.append("\n\nRemovendo a palavra " + value + ".");
 					arb.rbDelete(arb, no);
 					printAndCheckRBTree(saida, arb);
@@ -71,11 +97,11 @@ public class Main {
 		entrada.close();
 	}
 
-	private static void printAndCheckRBTree(StringBuffer saida, Arvore arb) {
+	private static void printAndCheckRBTree(StringBuffer saida, RBTree arb) {
 		saida.append("\n\n");
-		saida.append(arb.rbPrintOut(arb.raiz));
+		saida.append(arb.rbPrintOut(arb.root));
 		saida.append("\n");
-		saida.append(arb.rbCheckOut(arb.raiz));
+		saida.append(arb.rbCheckOut(arb.root));
 	}
 	
 	public static void gravarSaida(StringBuffer strSaida){
