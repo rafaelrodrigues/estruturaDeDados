@@ -5,48 +5,48 @@ package redBlackTrees;
  * @author rafaelrodrigues
  *
  */
-public class Node {
-	Node left;
-	Node right;
-	Node parent;
+public class RBElement {
+	RBElement left;
+	RBElement right;
+	RBElement parent;
 	String key;
 
 	// Black == True; Red == False;
 	boolean cor;
 
-	public Node(String key) {
+	public RBElement(String key) {
 		this.parent = this.left = this.right = RBTree.nil;
 		this.key = key;
 		this.cor = false;
 	}
 
-	public Node(String key, boolean cor) {
+	public RBElement(String key, boolean cor) {
 		this.parent = this.left = this.right = RBTree.nil;
 		this.key = key;
 		this.cor = cor;
 	}
 	
-	public Node getLeft() {
+	public RBElement getLeft() {
 		return left;
 	}
 
-	public void setLeft(Node left) {
+	public void setLeft(RBElement left) {
 		this.left = left;
 	}
 
-	public Node getRight() {
+	public RBElement getRight() {
 		return right;
 	}
 
-	public void setRight(Node right) {
+	public void setRight(RBElement right) {
 		this.right = right;
 	}
 
-	public Node getParent() {
+	public RBElement getParent() {
 		return parent;
 	}
 
-	public void setParent(Node parent) {
+	public void setParent(RBElement parent) {
 		this.parent = parent;
 	}
 

@@ -7,11 +7,11 @@ package redBlackTrees;
  */
 public class RBTree {
 
-	public Node root;
-	public Node result;
+	public RBElement root;
+	public RBElement result;
 
 	//Sentinela
-	public static Node nil = new Node("", true);
+	public static RBElement nil = new RBElement("", true);
 	
 	public static final boolean BLACK = true;
 	public static final boolean RED = false;
@@ -23,30 +23,30 @@ public class RBTree {
 	}
 
 	
-	private void rbLeftRotate(RBTree tree, Node x) {
-		Node y = x.right;
-		x.right = y.left;
+	private void rbLeftRotate(RBTree T, RBElement z) {
+		RBElement y = z.right;
+		z.right = y.left;
 
 		if (y.left != RBTree.nil) {
-			y.left.parent = x;
+			y.left.parent = z;
 		}
 
-		y.parent = x.parent;
+		y.parent = z.parent;
 
-		if (x.parent == RBTree.nil) {
-			tree.root = y;
-		} else if (x == x.parent.left) {
-			x.parent.left = y;
+		if (z.parent == RBTree.nil) {
+			T.root = y;
+		} else if (z == z.parent.left) {
+			z.parent.left = y;
 		} else {
-			x.parent.right = y;
+			z.parent.right = y;
 		}
 
-		y.left = x;
-		x.parent = y;
+		y.left = z;
+		z.parent = y;
 	}
 
-	private void rbRightRotate(RBTree arvore, Node x) {
-		Node y = x.left;
+	private void rbRightRotate(RBTree arvore, RBElement x) {
+		RBElement y = x.left;
 		x.left = y.right;
 
 		if (y.right != RBTree.nil) {
@@ -67,10 +67,10 @@ public class RBTree {
 		x.parent = y;
 	}
 	
-	public void rbInsert(RBTree arvore, Node z) {
+	public void rbInsert(RBTree T, RBElement z) {
 
-		Node y = RBTree.nil;
-		Node x = arvore.root;
+		RBElement y = RBTree.nil;
+		RBElement x = T.root;
 
 		while (x != RBTree.nil) {
 			y = x;
@@ -85,7 +85,7 @@ public class RBTree {
 		z.parent = y;
 
 		if (y == RBTree.nil) {
-			arvore.root = z;
+			T.root = z;
 		} else if (z.key.toLowerCase().compareTo(y.key.toLowerCase()) < 0) {
 			y.left = z;
 		} else {
@@ -96,58 +96,58 @@ public class RBTree {
 		z.right = RBTree.nil;
 		z.cor = RED;
 		
-		rbInsertFixUp(arvore, z);
+		rbInsertFixUp(T, z);
 		
 	}
 
-	private void rbInsertFixUp(RBTree arvore, Node z) {
-		while (!z.parent.cor) {
-			if (z.parent.parent != null && z.parent == z.parent.parent.left) {
-				Node y = z.parent.parent.right;
+	private void rbInsertFixUp(RBTree T, RBElement x) {
+		while (!x.parent.cor) {
+			if (x.parent.parent != null && x.parent == x.parent.parent.left) {
+				RBElement y = x.parent.parent.right;
 				// Caso 1
 				if (y != null && y.cor == RED) {
-					z.parent.cor = BLACK;
+					x.parent.cor = BLACK;
 					y.cor = BLACK;
-					z.parent.parent.cor = RED;
-					z = z.parent.parent;
+					x.parent.parent.cor = RED;
+					x = x.parent.parent;
 				} else {
 					// Caso 2
-					if (z == z.parent.right) {
-						z = z.parent;
-						rbLeftRotate(arvore, z);
+					if (x == x.parent.right) {
+						x = x.parent;
+						rbLeftRotate(T, x);
 					}
 
-					z.parent.cor = BLACK;
-					z.parent.parent.cor = RED;
-					rbRightRotate(arvore, z.parent.parent);
+					x.parent.cor = BLACK;
+					x.parent.parent.cor = RED;
+					rbRightRotate(T, x.parent.parent);
 				}
 			} else {
-				if (z.parent.parent != null && z.parent == z.parent.parent.right) {
-					Node y = z.parent.parent.left;
+				if (x.parent.parent != null && x.parent == x.parent.parent.right) {
+					RBElement y = x.parent.parent.left;
 					// Caso 1
 					if (y != null && !y.cor) {
-						z.parent.cor = BLACK;
+						x.parent.cor = BLACK;
 						y.cor = BLACK;
-						z.parent.parent.cor = RED;
-						z = z.parent.parent;
+						x.parent.parent.cor = RED;
+						x = x.parent.parent;
 					} else {
 						// Caso 2
-						if (z == z.parent.left) {
-							z = z.parent;
-							rbRightRotate(arvore, z);
+						if (x == x.parent.left) {
+							x = x.parent;
+							rbRightRotate(T, x);
 						}
 
-						z.parent.cor = BLACK;
-						z.parent.parent.cor = RED;
-						rbLeftRotate(arvore, z.parent.parent);
+						x.parent.cor = BLACK;
+						x.parent.parent.cor = RED;
+						rbLeftRotate(T, x.parent.parent);
 					}
 				}
 			}
 		}
-		arvore.root.cor = BLACK;
+		T.root.cor = BLACK;
 	}
 
-	private void rbTransplant(RBTree arb, Node u, Node v) {
+	private void rbTransplant(RBTree arb, RBElement u, RBElement v) {
 		if (u.parent == RBTree.nil) {
 			arb.root = v;
 		} else if (u == u.parent.left) {
@@ -158,18 +158,18 @@ public class RBTree {
 			v.parent = u.parent;
 	}
 
-	public void rbDelete(RBTree arvore, Node z) {
-		Node x, y = z;
+	public void rbDelete(RBTree T, RBElement z) {
+		RBElement x, y = z;
 		boolean auxCor = y.cor;
 
 		if (z.left == RBTree.nil) {
 			x = z.right;
-			rbTransplant(arvore, z, z.right);
+			rbTransplant(T, z, z.right);
 		} else if (z.right == RBTree.nil) {
 			x = z.left;
-			rbTransplant(arvore, z, z.left);
+			rbTransplant(T, z, z.left);
 		} else {
-			y = rbMinimo(z.right);
+			y = rbTreeMinimum(z.right);
 			auxCor = y.cor;
 			x = y.right;
 
@@ -177,33 +177,33 @@ public class RBTree {
 				if (x != null)
 					x.parent = y;
 			} else {
-				rbTransplant(arvore, y, y.right);
+				rbTransplant(T, y, y.right);
 				y.right = z.right;
 				y.right.parent = y;
 			}
 
-			rbTransplant(arvore, z, y);
+			rbTransplant(T, z, y);
 			y.left = z.left;
 			y.left.parent = y;
 			y.cor = z.cor;
 		}
 
 		if ((auxCor == BLACK)) {
-			rbDeleteFixUp(arvore, x);
+			rbDeleteFixUp(T, x);
 		}
 	}
 
-	private void rbDeleteFixUp(RBTree arvore, Node x) {
-		Node w = null;
+	private void rbDeleteFixUp(RBTree T, RBElement x) {
+		RBElement w = null;
 		
-		while (x != arvore.root && x.cor) {
+		while (x != T.root && x.cor) {
 			if (x == x.parent.left) {
 				w = x.parent.right;
 				if (w != null) {
 					if (w.cor == RED) { // Caso 1
 						w.cor = BLACK;
 						x.parent.cor = RED;
-						rbLeftRotate(arvore, x.parent);
+						rbLeftRotate(T, x.parent);
 						w = x.parent.right;
 					}
 
@@ -215,15 +215,15 @@ public class RBTree {
 						if (w.right.cor == BLACK) { // Caso 3
 							w.left.cor = BLACK;
 							w.cor = RED;
-							rbRightRotate(arvore, w);
+							rbRightRotate(T, w);
 							w = x.parent.right;
 						}	
 						// Caso 4
 						w.cor = x.parent.cor;
 						x.parent.cor = BLACK;
 						w.right.cor = BLACK;
-						rbLeftRotate(arvore, x.parent);
-						x = arvore.root;
+						rbLeftRotate(T, x.parent);
+						x = T.root;
 					}	
 				} else {
 					break;
@@ -234,7 +234,7 @@ public class RBTree {
 					if (w.cor == RED) { // Caso 1
 						w.cor = BLACK;
 						x.parent.cor = RED;
-						rbRightRotate(arvore, x.parent);
+						rbRightRotate(T, x.parent);
 						w = x.parent.left;
 					}
 					if (w.left.cor == BLACK && w.right.cor == BLACK) { // Caso 2
@@ -245,15 +245,15 @@ public class RBTree {
 						if (w.left.cor == BLACK) { // Caso 3
 							w.right.cor = BLACK;
 							w.cor = RED;
-							rbLeftRotate(arvore, w);
+							rbLeftRotate(T, w);
 							w = x.parent.left;
 						}
 						// Caso 4
 						w.cor = x.parent.cor;
 						x.parent.cor = BLACK;
 						w.left.cor = BLACK;
-						rbRightRotate(arvore, x.parent);
-						x = arvore.root;
+						rbRightRotate(T, x.parent);
+						x = T.root;
 					}	
 					
 				} else {
@@ -264,103 +264,103 @@ public class RBTree {
 		x.cor = BLACK;
 	}
 
-	private Node rbMinimo(Node busca) {
+	private RBElement rbTreeMinimum(RBElement T) {
 		result = RBTree.nil;
 
-		if (busca.left == RBTree.nil) {
-			result = busca;
+		if (T.left == RBTree.nil) {
+			result = T;
 		} else {
-			rbMinimo(busca.left);
+			rbTreeMinimum(T.left);
 		}
 
 		return result;
 	}
 	
-	public void rbCheck(Node no) { 
-		if (no != RBTree.nil) {
-			int altura = rbAlturaNo(no);
+	public void rbCheck(RBElement z) { 
+		if (z != RBTree.nil) {
+			int altura = rbBlackHeight(z);
 
 			String pai = "";
-			if (no == this.root) {
+			if (z == this.root) {
 				pai = "NIL";
 			} else {
-				pai = no.parent.key;
+				pai = z.parent.key;
 			}
 
 			String esq = "";
-			if (no.left == RBTree.nil) {
+			if (z.left == RBTree.nil) {
 				esq = "NIL";
 			} else {
-				esq = no.left.key;
+				esq = z.left.key;
 			}
 
 			String dir = "";
-			if (no.right == RBTree.nil) {
+			if (z.right == RBTree.nil) {
 				dir = "NIL";
 			} else {
-				dir = no.right.key;
+				dir = z.right.key;
 			}
 
-			auxExit += "(" + pai + ", " + no.key + ", " + getColor(no) + ", " + String.valueOf(altura) + ", " + esq + ", " + dir + ")\n";
+			auxExit += "(" + pai + ", " + z.key + ", " + getColor(z) + ", " + String.valueOf(altura) + ", " + esq + ", " + dir + ")\n";
 			
-			rbCheck(no.left);
-			rbCheck(no.right);
+			rbCheck(z.left);
+			rbCheck(z.right);
 		}
 	}
 	
-	public String rbCheckOut(Node no){
+	public String rbCheckOut(RBElement z){
 		auxExit = "";
-		rbCheck(no);
+		rbCheck(z);
 		return auxExit;
 	}
 	
-	private int rbAlturaNo(Node no) {
+	private int rbBlackHeight(RBElement z) {
 		int contador = 1;
-		while (no.left != RBTree.nil) {
-			no = no.left;
-			if (no.cor == BLACK)
+		while (z.left != RBTree.nil) {
+			z = z.left;
+			if (z.cor == BLACK)
 				contador++;
 		}
 		return contador;
 	}
-
-	public void rbPrint(Node no) {
-		if (no != RBTree.nil) {
-			rbPrint(no.left);
-			auxExit += no.key + " ";
-			rbPrint(no.right);
+	
+	public void rbPrint(RBElement z) {
+		if (z != RBTree.nil) {
+			rbPrint(z.left);
+			auxExit += z.key + " ";
+			rbPrint(z.right);
 		}
 	}
 	
-	public String rbPrintOut(Node no){
+	public String rbPrintOut(RBElement z){
 		auxExit = "";
-		rbPrint(no);
+		rbPrint(z);
 		return auxExit.trim().replace(" ",", ");
 	}
 
-	public Node rbBusca(RBTree arvore, String valor) {
-		Node no = rbBusca(arvore.root, valor);
-		rbCheck(no);
-		return no;
+	public RBElement rbSearch(RBTree T, String c) {
+		RBElement x = rbSearch(T.root, c);
+		rbCheck(x);
+		return x;
 	}
 	
-	public Node rbBusca(Node node, String valor) {
+	public RBElement rbSearch(RBElement z, String valor) {
 		result = RBTree.nil;
-		if (node != RBTree.nil) {
-			if (node.key.toLowerCase().compareTo(valor.toLowerCase()) == 0)
-				return node;
+		if (z != RBTree.nil) {
+			if (z.key.toLowerCase().compareTo(valor.toLowerCase()) == 0)
+				return z;
 
-			if (node.key.toLowerCase().compareTo(valor.toLowerCase()) > 0) {
-				result = rbBusca(node.left, valor);
+			if (z.key.toLowerCase().compareTo(valor.toLowerCase()) > 0) {
+				result = rbSearch(z.left, valor);
 			} else {
-				result = rbBusca(node.right, valor);
+				result = rbSearch(z.right, valor);
 			}
 		}
 		return result;
 
 	}
 
-	private String getColor(Node no) {
+	private String getColor(RBElement no) {
 		return no.cor ? "preto" : "vermelho";
 	}
 

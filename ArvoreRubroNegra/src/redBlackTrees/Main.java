@@ -2,7 +2,6 @@ package redBlackTrees;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,16 +24,17 @@ public class Main {
 		StringBuffer saida;
 		RBTree arb;
 
-		f = getFile(typeFileParameter.FIXED, args);
+		f = getFile(typeFileParameter.ARGS, args);
 		
 //		f = new FileReader(args[0]);
 		saida = new StringBuffer();
 		arb = new RBTree();
 		
-//		saida.append("Arquivo de Entrada: ");
+		if (args[0] != null)
+			saida.append("Arquivo de Entrada: "+ args[0].toString());
 		
+
 		lerArquivoPopularArvoreRB(f, saida, arb);
-		printAndCheckRBTree(saida, arb);
 		gravarSaida(saida);
 			
 	}
@@ -57,7 +57,7 @@ public class Main {
 			}
 			
 		} catch (Exception e) {
-			System.out.print("ERRO AO LER O DICIONÁRIO");
+			System.out.print("ERRO AO LER O DICIONÁRIO. ");
 			return null;
 		}
 	}
@@ -68,18 +68,18 @@ public class Main {
 		while (entrada.hasNext()) {
 			String value = entrada.next();
 			
-			Node no = arb.rbBusca(arb.root, value);
+			RBElement no = arb.rbSearch(arb.root, value);
 			switch (entrada.next()) {
 			case "1":
 				if (no == RBTree.nil) {
 					if (value.length() <= 20) {
-						no = new Node(value);
+						no = new RBElement(value);
 						arb.rbInsert(arb, no);
 					} else {
-						saida.append("\n\nA palavra " + value + " É maior que 20 caracteres");
+						saida.append("\n\nChave não inserida, palavra " + value + " possui mais do que 20 caracteres");
 					}
 				} else {
-					saida.append("\n\nA palavra " + value + " já existe.");
+					saida.append("\n\nChave não inserida, palavra " + value + " já existe.");
 				}
 				break;
 			case "0":
@@ -95,6 +95,8 @@ public class Main {
 			}
 		}
 		entrada.close();
+		printAndCheckRBTree(saida, arb);
+		
 	}
 
 	private static void printAndCheckRBTree(StringBuffer saida, RBTree arb) {
