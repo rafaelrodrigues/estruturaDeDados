@@ -44,7 +44,7 @@ public class RBTree {
 		z.parent = y;
 	}
 
-	private void rbRightRotate(RBTree arvore, RBElement x) {
+	private void rbRightRotate(RBTree T, RBElement x) {
 		RBElement y = x.left;
 		x.left = y.right;
 
@@ -55,7 +55,7 @@ public class RBTree {
 		y.parent = x.parent;
 
 		if (x.parent == RBTree.nil) {
-			arvore.root = y;
+			T.root = y;
 		} else if (x == x.parent.right) {
 			x.parent.right = y;
 		} else {
@@ -146,9 +146,9 @@ public class RBTree {
 		T.root.color = BLACK;
 	}
 
-	private void rbTransplant(RBTree arb, RBElement u, RBElement v) {
+	private void rbTransplant(RBTree T, RBElement u, RBElement v) {
 		if (u.parent == RBTree.nil) {
-			arb.root = v;
+			T.root = v;
 		} else if (u == u.parent.left) {
 			u.parent.left = v;
 		} else 
@@ -343,24 +343,24 @@ public class RBTree {
 		return x;
 	}
 	
-	public RBElement rbSearch(RBElement z, String valor) {
+	public RBElement rbSearch(RBElement z, String c) {
 		result = RBTree.nil;
 		if (z != RBTree.nil) {
-			if (z.key.toLowerCase().compareTo(valor.toLowerCase()) == 0)
+			if (z.key.toLowerCase().compareTo(c.toLowerCase()) == 0)
 				return z;
 
-			if (z.key.toLowerCase().compareTo(valor.toLowerCase()) > 0) {
-				result = rbSearch(z.left, valor);
+			if (z.key.toLowerCase().compareTo(c.toLowerCase()) > 0) {
+				result = rbSearch(z.left, c);
 			} else {
-				result = rbSearch(z.right, valor);
+				result = rbSearch(z.right, c);
 			}
 		}
 		return result;
 
 	}
 
-	private String getColor(RBElement no) {
-		return no.color ? "preto" : "vermelho";
+	private String getColor(RBElement z) {
+		return z.color ? "preto" : "vermelho";
 	}
 
 }
