@@ -1,5 +1,3 @@
-package redBlackTrees;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
@@ -20,20 +18,15 @@ public class Main {
 	
 	public static void main(String[] args) {
 
+		RBTree arb = new RBTree();;
+		StringBuffer saida = new StringBuffer("\n|--- RED-BLACK TREE ---|");
 		FileReader f = null;
-		StringBuffer saida;
-		RBTree arb;
-
+		
 		f = getFile(typeFileParameter.ARGS, args);
 		
-//		f = new FileReader(args[0]);
-		saida = new StringBuffer();
-		arb = new RBTree();
-		
-		if (args[0] != null)
-			saida.append("Arquivo de Entrada: "+ args[0].toString());
-		
-
+		if (args.length > 0 && args[0] != null) 
+			saida.append("\n\nArquivo de Entrada: "+ args[0].toString());
+			
 		lerArquivoPopularArvoreRB(f, saida, arb);
 		gravarSaida(saida);
 			
@@ -43,7 +36,7 @@ public class Main {
 		try {
 			switch (type.ordinal()) {
 				case 0 : 
-					File file = new File("/Users/rafaelrodrigues/Dev/workspace/dicionario.txt");
+					File file = new File("Path");
 					return new FileReader(file);
 				case 1 :
 					return new FileReader(args[0]);
@@ -57,7 +50,7 @@ public class Main {
 			}
 			
 		} catch (Exception e) {
-			System.out.print("ERRO AO LER O DICIONÁRIO. ");
+			System.out.println("ERRO AO LER O DICIONÁRIO. ");
 			return null;
 		}
 	}
@@ -76,19 +69,19 @@ public class Main {
 						no = new RBElement(value);
 						arb.rbInsert(arb, no);
 					} else {
-						saida.append("\n\nChave não inserida, palavra " + value + " possui mais do que 20 caracteres");
+						saida.append("\n\nChave não inserida, palavra \"" + value + "\" possui mais do que 20 caracteres");
 					}
 				} else {
-					saida.append("\n\nChave não inserida, palavra " + value + " já existe.");
+					saida.append("\n\nChave não inserida, palavra \"" + value + "\" já existe.");
 				}
 				break;
 			case "0":
 				if (no != RBTree.nil) {
-					saida.append("\n\nRemovendo a palavra " + value + ".");
+					saida.append("\n\nRemovendo a palavra \"" + value + "\".");
 					arb.rbDelete(arb, no);
 					printAndCheckRBTree(saida, arb);
 				} else {
-					saida.append("\n\nA palavra "+value+" foi removida anteriormente ou não foi inserida.");
+					saida.append("\n\nA palavra \""+value+"\" foi removida anteriormente ou não foi inserida.");
 				}
 				break;
 
@@ -100,14 +93,14 @@ public class Main {
 	}
 
 	private static void printAndCheckRBTree(StringBuffer saida, RBTree arb) {
-		saida.append("\n\n");
+		saida.append("\n\nLista Ordenada da Árvore:\n");
 		saida.append(arb.rbPrintOut(arb.root));
-		saida.append("\n");
+		saida.append("\n\nNós da Árvore:\n");
 		saida.append(arb.rbCheckOut(arb.root));
 	}
 	
 	public static void gravarSaida(StringBuffer strSaida){
-		File arquivo = new File("saida.txt");
+		File arquivo = new File("rbTreeSaida.txt");
 	    try {
 	    	FileWriter fw = new FileWriter(arquivo);  
 	    	BufferedWriter bw = new BufferedWriter(fw);  

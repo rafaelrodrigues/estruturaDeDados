@@ -1,4 +1,3 @@
-package redBlackTrees;
 /**
  * Classe que implementa o nó da árvore Rubro Negra.
  * 
@@ -12,18 +11,18 @@ public class RBElement {
 	String key;
 
 	// Black == True; Red == False;
-	boolean cor;
+	boolean color;
 
 	public RBElement(String key) {
 		this.parent = this.left = this.right = RBTree.nil;
 		this.key = key;
-		this.cor = false;
+		this.color = false;
 	}
 
-	public RBElement(String key, boolean cor) {
+	public RBElement(String key, boolean black) {
 		this.parent = this.left = this.right = RBTree.nil;
 		this.key = key;
-		this.cor = cor;
+		this.color = black;
 	}
 	
 	public RBElement getLeft() {
@@ -58,12 +57,12 @@ public class RBElement {
 		this.key = key;
 	}
 
-	public boolean isCor() {
-		return cor;
+	public boolean isBlack() {
+		return color;
 	}
 
-	public void setCor(boolean cor) {
-		this.cor = cor;
+	public void setColor(boolean color) {
+		this.color = color;
 	}
 
 }

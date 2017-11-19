@@ -1,4 +1,3 @@
-package redBlackTrees;
 /**
  * Classe que implementa uma árvore Rubro Negra. 
  * 
@@ -94,21 +93,21 @@ public class RBTree {
 
 		z.left = RBTree.nil;
 		z.right = RBTree.nil;
-		z.cor = RED;
+		z.color = RED;
 		
 		rbInsertFixUp(T, z);
 		
 	}
 
 	private void rbInsertFixUp(RBTree T, RBElement x) {
-		while (!x.parent.cor) {
+		while (!x.parent.color) {
 			if (x.parent.parent != null && x.parent == x.parent.parent.left) {
 				RBElement y = x.parent.parent.right;
 				// Caso 1
-				if (y != null && y.cor == RED) {
-					x.parent.cor = BLACK;
-					y.cor = BLACK;
-					x.parent.parent.cor = RED;
+				if (y != null && y.color == RED) {
+					x.parent.color = BLACK;
+					y.color = BLACK;
+					x.parent.parent.color = RED;
 					x = x.parent.parent;
 				} else {
 					// Caso 2
@@ -117,18 +116,18 @@ public class RBTree {
 						rbLeftRotate(T, x);
 					}
 
-					x.parent.cor = BLACK;
-					x.parent.parent.cor = RED;
+					x.parent.color = BLACK;
+					x.parent.parent.color = RED;
 					rbRightRotate(T, x.parent.parent);
 				}
 			} else {
 				if (x.parent.parent != null && x.parent == x.parent.parent.right) {
 					RBElement y = x.parent.parent.left;
 					// Caso 1
-					if (y != null && !y.cor) {
-						x.parent.cor = BLACK;
-						y.cor = BLACK;
-						x.parent.parent.cor = RED;
+					if (y != null && !y.color) {
+						x.parent.color = BLACK;
+						y.color = BLACK;
+						x.parent.parent.color = RED;
 						x = x.parent.parent;
 					} else {
 						// Caso 2
@@ -137,14 +136,14 @@ public class RBTree {
 							rbRightRotate(T, x);
 						}
 
-						x.parent.cor = BLACK;
-						x.parent.parent.cor = RED;
+						x.parent.color = BLACK;
+						x.parent.parent.color = RED;
 						rbLeftRotate(T, x.parent.parent);
 					}
 				}
 			}
 		}
-		T.root.cor = BLACK;
+		T.root.color = BLACK;
 	}
 
 	private void rbTransplant(RBTree arb, RBElement u, RBElement v) {
@@ -160,7 +159,7 @@ public class RBTree {
 
 	public void rbDelete(RBTree T, RBElement z) {
 		RBElement x, y = z;
-		boolean auxCor = y.cor;
+		boolean auxCor = y.color;
 
 		if (z.left == RBTree.nil) {
 			x = z.right;
@@ -170,7 +169,7 @@ public class RBTree {
 			rbTransplant(T, z, z.left);
 		} else {
 			y = rbTreeMinimum(z.right);
-			auxCor = y.cor;
+			auxCor = y.color;
 			x = y.right;
 
 			if (y.parent == z) {
@@ -185,7 +184,7 @@ public class RBTree {
 			rbTransplant(T, z, y);
 			y.left = z.left;
 			y.left.parent = y;
-			y.cor = z.cor;
+			y.color = z.color;
 		}
 
 		if ((auxCor == BLACK)) {
@@ -196,32 +195,32 @@ public class RBTree {
 	private void rbDeleteFixUp(RBTree T, RBElement x) {
 		RBElement w = null;
 		
-		while (x != T.root && x.cor) {
+		while (x != T.root && x.color) {
 			if (x == x.parent.left) {
 				w = x.parent.right;
 				if (w != null) {
-					if (w.cor == RED) { // Caso 1
-						w.cor = BLACK;
-						x.parent.cor = RED;
+					if (w.color == RED) { // Caso 1
+						w.color = BLACK;
+						x.parent.color = RED;
 						rbLeftRotate(T, x.parent);
 						w = x.parent.right;
 					}
 
-					if (w.left.cor == BLACK && w.right.cor == BLACK) { // Caso 2
-						w.cor = RED;
+					if (w.left.color == BLACK && w.right.color == BLACK) { // Caso 2
+						w.color = RED;
 						x = x.parent;
 					
 					} else { 
-						if (w.right.cor == BLACK) { // Caso 3
-							w.left.cor = BLACK;
-							w.cor = RED;
+						if (w.right.color == BLACK) { // Caso 3
+							w.left.color = BLACK;
+							w.color = RED;
 							rbRightRotate(T, w);
 							w = x.parent.right;
 						}	
 						// Caso 4
-						w.cor = x.parent.cor;
-						x.parent.cor = BLACK;
-						w.right.cor = BLACK;
+						w.color = x.parent.color;
+						x.parent.color = BLACK;
+						w.right.color = BLACK;
 						rbLeftRotate(T, x.parent);
 						x = T.root;
 					}	
@@ -231,27 +230,27 @@ public class RBTree {
 			} else if (x == x.parent.right){
 				w = x.parent.left;
 				if (w != null) {
-					if (w.cor == RED) { // Caso 1
-						w.cor = BLACK;
-						x.parent.cor = RED;
+					if (w.color == RED) { // Caso 1
+						w.color = BLACK;
+						x.parent.color = RED;
 						rbRightRotate(T, x.parent);
 						w = x.parent.left;
 					}
-					if (w.left.cor == BLACK && w.right.cor == BLACK) { // Caso 2
-						w.cor = RED;
+					if (w.left.color == BLACK && w.right.color == BLACK) { // Caso 2
+						w.color = RED;
 						x = x.parent;
 					
 					} else { 
-						if (w.left.cor == BLACK) { // Caso 3
-							w.right.cor = BLACK;
-							w.cor = RED;
+						if (w.left.color == BLACK) { // Caso 3
+							w.right.color = BLACK;
+							w.color = RED;
 							rbLeftRotate(T, w);
 							w = x.parent.left;
 						}
 						// Caso 4
-						w.cor = x.parent.cor;
-						x.parent.cor = BLACK;
-						w.left.cor = BLACK;
+						w.color = x.parent.color;
+						x.parent.color = BLACK;
+						w.left.color = BLACK;
 						rbRightRotate(T, x.parent);
 						x = T.root;
 					}	
@@ -261,7 +260,7 @@ public class RBTree {
 				}
 			}
 		}
-		x.cor = BLACK;
+		x.color = BLACK;
 	}
 
 	private RBElement rbTreeMinimum(RBElement T) {
@@ -318,7 +317,7 @@ public class RBTree {
 		int contador = 1;
 		while (z.left != RBTree.nil) {
 			z = z.left;
-			if (z.cor == BLACK)
+			if (z.color == BLACK)
 				contador++;
 		}
 		return contador;
@@ -361,7 +360,7 @@ public class RBTree {
 	}
 
 	private String getColor(RBElement no) {
-		return no.cor ? "preto" : "vermelho";
+		return no.color ? "preto" : "vermelho";
 	}
 
 }
